@@ -1,4 +1,4 @@
-Gender,Age,Height,Weight,Smoke,Alcohol,Sleep_Hours,Exercise_Hours,Object_Hit_Weight,Time_to_Heal
+sex,age,ht,wt,smoke,alcohol,sleephrs,exercisehrs,hitbox,healtime
 0,33.42,183.02,67.7,1,1,6.15,2.6,0.48,45.05
 1,48.76,185.62,60.76,1,0,6.42,3.74,1.59,41.8
 0,39.5,170.32,78.9,0,0,6.52,5.08,0.98,40.09

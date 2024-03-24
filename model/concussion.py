@@ -2,28 +2,25 @@ import numpy as np
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error
 import pandas as pd
 
-concussion_regression = None
-
-class ConcussionRegression: # using OOP
+class ConcussionRegression:
     def __init__(self):
         self.dt = None
-        self.logreg = None
+        self.lr = None
         self.X_train = None
         self.X_test = None
         self.y_train = None
         self.y_test = None
-        self.encoder = None
+        self.td = None
         
     def initConcussion(self):
         # load in the csv data
         concussion_data = pd.read_csv('concussion_recovery_data.csv')
-        global td
         self.td = concussion_data
-        categories = ['age','ht','wt','sleephrs','exercisehrs','hitbox','healtime']
+        categories = ['age', 'ht', 'wt', 'sleephrs', 'exercisehrs', 'hitbox', 'healtime']
         # manage the data
         # for non-boolean categories, drop all negative values
         for cat in categories:
@@ -39,20 +36,22 @@ class ConcussionRegression: # using OOP
         dt.fit(self.X_train, self.y_train)
         self.dt = dt
     
-    def runLogisticRegression(self, X, y):
-                self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(X, y, test_size=0.3, random_state=42)
-                self.logreg = LogisticRegression()
-                self.logreg.fit(self.X_train, self.y_train)
-                
+    def runLinearRegression(self, X, y):
+        self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+        global lr
+        lr = LinearRegression()
+        lr.fit(self.X_train, self.y_train)
+
     def testModel(self):
-        # test the model
-        y_pred = self.logreg.predict(self.X_test)
-        accuracy = accuracy_score(self.y_test, y_pred)
-        print('Logistic Regression Accuracy: {:.2%}'.format(accuracy))  
+        # Test the linear regression model
+        y_pred = self.lr.predict(self.X_test)
+        mse = mean_squared_error(self.y_test, y_pred)
+        print('Mean Squared Error (MSE): {:.2f}'.format(mse)) 
         
-def predict(self,data):
-        case = data.get("case")
-        new_case = {
+def predict(data):
+    new_case = data.copy()
+    '''
+    new_case = {
             'name': case.get('name'),
             'sex': case.get('sex'),
             'ht': case.get('ht'),
@@ -63,20 +62,22 @@ def predict(self,data):
             'exercisehrs': case.get('exercisehrs'),
             'hitbox': case.get('hitbox'),
         }
-        new_case['sex'] = new_case['sex'].apply(lambda x: 1 if x == 'male' else 0)
-        new_case['smoke'] = new_case['smoke'].apply(lambda x: 1 if x == 'yes' else 0)
-        new_case['alcohol'] = new_case['alcohol'].apply(lambda x: 1 if x == 'yes' else 0)
-        new_case.drop(['name'], axis=1, inplace=True)
-        # predict time to heal
-        healtime = np.squeeze(self.logreg.predict_proba(new_case))
-        return healtime
+    '''
+    new_case['sex'] = new_case['sex'].apply(lambda x: 1 if x == 'male' else 0)
+    new_case.drop(['name'], axis=1, inplace=True)
+    # predict time to heal
+    # healtime = lr.predict(np.array([list(new_case.values())]))
+    healtime = np.squeeze(lr.predict(new_case))
+    # print(healtime)
+    return healtime
+
 def initConcussion():
     global concussion_regression
     concussion_regression = ConcussionRegression()
     concussion_regression.initConcussion()
     X = concussion_regression.td.drop('healtime', axis=1)
     y = concussion_regression.td['healtime']
-    concussion_regression.runLogisticRegression(X, y)
+    concussion_regression.runLinearRegression(X, y)
     
 # test the model
 if __name__ == "__main__":
@@ -84,12 +85,13 @@ if __name__ == "__main__":
     patient_data = pd.DataFrame({
         'name': ['Andrew Kim'],
         'sex': ['male'],
+        'age': [16],
         'ht': [180],
         'wt': [60],
         'smoke': [0],
-        'alcohol': [0],
+        'alcohol': [1],
         'sleephrs': [8.5],
         'exercisehrs': [5.5],
         'hitbox': [0.28],
     })
-    print(concussion_regression.predict(patient_data))
+    print(predict(patient_data))

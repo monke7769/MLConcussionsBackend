@@ -18,7 +18,9 @@ from api.player import player_api
 from model.users import initUsers
 from model.players import initPlayers
 from model.titanics import initTitanic
+from model.concussion import initConcussion
 from api.model import model_api
+from api.concussion import concussion_api
 
 # setup App pages
 from projects.projects import app_projects # Blueprint directory import projects definition
@@ -34,6 +36,7 @@ app.register_blueprint(user_api) # register api routes
 app.register_blueprint(player_api)
 app.register_blueprint(app_projects) # register app pages
 app.register_blueprint(model_api)
+app.register_blueprint(concussion_api)
 
 @app.errorhandler(404)  # catch for URL not found
 def page_not_found(e):
@@ -52,7 +55,7 @@ def table():
 def before_request():
     # Check if the request came from a specific origin
     allowed_origin = request.headers.get('Origin')
-    if allowed_origin in ['http://localhost:4000', 'https://nighthawkcoders.github.io','http://127.0.0.1:4000','http://127.0.0.1:4000.Titanic.html']:
+    if allowed_origin in ['http://localhost:4000', 'https://nighthawkcoders.github.io','http://127.0.0.1:4000']:
         cors._origins = allowed_origin
 
 # Create an AppGroup for custom commands
@@ -64,6 +67,7 @@ def generate_data():
     initUsers()
     initPlayers()
     initTitanic()
+    initConcussion()
 
 # Register the custom command group with the Flask application
 app.cli.add_command(custom_cli)

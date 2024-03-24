@@ -20,29 +20,30 @@ class ConcussionRegression: # using OOP
         
     def initConcussion(self):
         # load in the csv data
-        global df
-        df = pd.read_csv('concussion_recovery_data.csv')
-        # print(df)
+        concussion_data = pd.read_csv('concussion_recovery_data.csv')
+        global td
+        self.td = concussion_data
         categories = ['age','ht','wt','sleephrs','exercisehrs','hitbox','healtime']
         # manage the data
         # for non-boolean categories, drop all negative values
         for cat in categories:
-            df.drop(df[df[cat] < 0].index, inplace=True)
+            self.td.drop(self.td[self.td[cat] < 0].index, inplace=True)
             
     def runDecisionTree(self):
         # want to train to predict how long it takes to heal
-        self.X = df.drop('healtime', axis=1)
-        self.y = df['healtime']
+        self.X = self.td.drop('healtime', axis=1)
+        self.y = self.td['healtime']
         # split up the dataset to train/test
         self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(self.X, self.y, test_size=0.3, random_state=42)
         dt = DecisionTreeClassifier()
         dt.fit(self.X_train, self.y_train)
         self.dt = dt
     
-    def trainConcussion(self):
-        # training logistic regression model!
-        self.logreg = LogisticRegression()
-        self.logreg.fit(self.X_train, self.y_train)
+    def runLogisticRegression(self, X, y):
+                self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+                self.logreg = LogisticRegression()
+                self.logreg.fit(self.X_train, self.y_train)
+                
     def testModel(self):
         # test the model
         y_pred = self.logreg.predict(self.X_test)
@@ -73,8 +74,8 @@ def initConcussion():
     global concussion_regression
     concussion_regression = ConcussionRegression()
     concussion_regression.initConcussion()
-    X = concussion_regression.drop('healtime', axis=1)
-    y = concussion_regression['healtime']
+    X = concussion_regression.td.drop('healtime', axis=1)
+    y = concussion_regression.td['healtime']
     concussion_regression.runLogisticRegression(X, y)
     
 # test the model

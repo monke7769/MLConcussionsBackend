@@ -14,12 +14,10 @@ from api.covid import covid_api # Blueprint import api definition
 from api.joke import joke_api # Blueprint import api definition
 from api.user import user_api # Blueprint import api definition
 from api.player import player_api
-from api.titanicIAN import model_api
 # database migrations
 from model.users import initUsers
 from model.players import initPlayers
 from model.titanics import initTitanic
-from model.titanicIAN import initTitanic2
 from api.model import model_api
 
 # setup App pages
@@ -66,7 +64,6 @@ def generate_data():
     initUsers()
     initPlayers()
     initTitanic()
-    initTitanic2()
 
 # Register the custom command group with the Flask application
 app.cli.add_command(custom_cli)

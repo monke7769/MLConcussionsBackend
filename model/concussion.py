@@ -7,8 +7,10 @@ from sklearn.metrics import mean_squared_error
 from sklearn.metrics import accuracy_score
 import pandas as pd
 
+# Define the Concussion Regression global variable
 concussion_regression = None
 
+# define the concussionregression class
 class ConcussionRegression:
     def __init__(self):
         self.dt = None
@@ -25,18 +27,19 @@ class ConcussionRegression:
         global cd
         cd = concussion_data
         categories = ['age', 'ht', 'wt', 'sleephrs', 'exercisehrs', 'hitbox', 'healtime']
-        # manage the data
+        # clean up the data
         # for non-boolean categories, drop all negative values
         for cat in categories:
             cd.drop(cd[cd[cat] < 0].index, inplace=True)
     
     def runLinearRegression(self):
+        # making a linear regression model
         X = cd.drop('healtime', axis=1)
         y = cd['healtime']
+        # split up data into training and testing sets
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
-        X = cd.drop('healtime', axis=1)
-        y = cd['healtime']
         global lr
+        # train model
         lr = LinearRegression()
         lr.fit(X_train, y_train)
         
@@ -55,15 +58,17 @@ def predict(data):
             'hitbox': case.get('hitbox'),
         }
     '''
+    # convert frontend data to usable format
     new_case['sex'] = new_case['sex'].apply(lambda x: 1 if x == 'male' else 0)
     new_case.drop(['name'], axis=1, inplace=True)
     # predict time to heal
-    # healtime = lr.predict(np.array([list(new_case.values())]))
+    # need to convert to list since "numpy arrays are not directly serializable"
     healtime = np.squeeze(lr.predict(new_case)).tolist()
     print(healtime)
     return healtime
 
 def initConcussion():
+    # initiate the concussion regression model
     global concussion_regression
     concussion_regression = ConcussionRegression()
     concussion_regression.initConcussion()
@@ -78,7 +83,7 @@ if __name__ == "__main__":
         'sex': ['male'],
         'age': [16],
         'ht': [180],
-        'wt': [60],
+        'wt': [73],
         'smoke': [0],
         'alcohol': [1],
         'sleephrs': [8.5],

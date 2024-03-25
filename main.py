@@ -55,7 +55,7 @@ def table():
 def before_request():
     # Check if the request came from a specific origin
     allowed_origin = request.headers.get('Origin')
-    if allowed_origin in ['http://localhost', 'http://127.0.0.1:80','http://localhost:4000', 'https://nighthawkcoders.github.io','http://127.0.0.1:4000', 'file:///C:/nginx-1.25.4/html/concussion.html']:
+    if allowed_origin in ['http://localhost', 'http://127.0.0.1:8086','http://localhost:4000', 'https://nighthawkcoders.github.io','http://127.0.0.1:4000', 'file:///C:/nginx-1.25.4/html/concussion.html']:
         cors._origins = allowed_origin
 
 # Create an AppGroup for custom commands

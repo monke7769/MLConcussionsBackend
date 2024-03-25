@@ -4,6 +4,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error
+from sklearn.metrics import accuracy_score
 import pandas as pd
 
 concussion_regression = None
@@ -21,34 +22,23 @@ class ConcussionRegression:
     def initConcussion(self):
         # load in the csv data
         concussion_data = pd.read_csv('concussion_recovery_data.csv')
-        self.td = concussion_data
+        global cd
+        cd = concussion_data
         categories = ['age', 'ht', 'wt', 'sleephrs', 'exercisehrs', 'hitbox', 'healtime']
         # manage the data
         # for non-boolean categories, drop all negative values
         for cat in categories:
-            self.td.drop(self.td[self.td[cat] < 0].index, inplace=True)
-            
-    def runDecisionTree(self):
-        # want to train to predict how long it takes to heal
-        self.X = self.td.drop('healtime', axis=1)
-        self.y = self.td['healtime']
-        # split up the dataset to train/test
-        self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(self.X, self.y, test_size=0.3, random_state=42)
-        dt = DecisionTreeClassifier()
-        dt.fit(self.X_train, self.y_train)
-        self.dt = dt
+            cd.drop(cd[cd[cat] < 0].index, inplace=True)
     
-    def runLinearRegression(self, X, y):
-        self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+    def runLinearRegression(self):
+        X = cd.drop('healtime', axis=1)
+        y = cd['healtime']
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+        X = cd.drop('healtime', axis=1)
+        y = cd['healtime']
         global lr
         lr = LinearRegression()
-        lr.fit(self.X_train, self.y_train)
-
-    def testModel(self):
-        # Test the linear regression model
-        y_pred = self.lr.predict(self.X_test)
-        mse = mean_squared_error(self.y_test, y_pred)
-        print('Mean Squared Error (MSE): {:.2f}'.format(mse)) 
+        lr.fit(X_train, y_train)
         
 def predict(data):
     new_case = data.copy()
@@ -69,20 +59,19 @@ def predict(data):
     new_case.drop(['name'], axis=1, inplace=True)
     # predict time to heal
     # healtime = lr.predict(np.array([list(new_case.values())]))
-    healtime = np.squeeze(lr.predict(new_case))
-    # print(healtime)
+    healtime = np.squeeze(lr.predict(new_case)).tolist()
+    print(healtime)
     return healtime
 
 def initConcussion():
     global concussion_regression
     concussion_regression = ConcussionRegression()
     concussion_regression.initConcussion()
-    X = concussion_regression.td.drop('healtime', axis=1)
-    y = concussion_regression.td['healtime']
-    concussion_regression.runLinearRegression(X, y)
+    concussion_regression.runLinearRegression()
     
 # test the model
 if __name__ == "__main__":
+    # initialize concussion model
     initConcussion()
     patient_data = pd.DataFrame({
         'name': ['Andrew Kim'],

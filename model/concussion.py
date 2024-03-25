@@ -25,6 +25,7 @@ class ConcussionRegression:
         # load in the csv data
         concussion_data = pd.read_csv('concussion_recovery_data.csv')
         global cd
+        # now cd has all the data
         cd = concussion_data
         categories = ['age', 'ht', 'wt', 'sleephrs', 'exercisehrs', 'hitbox', 'healtime']
         # clean up the data

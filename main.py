@@ -17,7 +17,7 @@ from api.player import player_api
 # database migrations
 from model.users import initUsers
 from model.players import initPlayers
-from model.titanics import initTitanic
+from model.model import initTitanic
 from model.concussion import initConcussion
 from api.model import model_api
 from api.concussion import concussion_api

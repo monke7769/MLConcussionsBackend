@@ -38,6 +38,6 @@ class ConcussionAPI:
                 'hitbox': [hitbox],
             })
             initConcussion()
-            return predict(case)
+            return jsonify(predict(case))
     api.add_resource(_Concussion, '/')
 

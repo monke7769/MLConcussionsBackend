@@ -17,9 +17,9 @@ from api.player import player_api
 # database migrations
 from model.users import initUsers
 from model.players import initPlayers
-from model.model import initTitanic
+from model.titanic import initTitanic
 from model.concussion import initConcussion
-from api.model import model_api
+from api.titanic import model_api
 from api.concussion import concussion_api
 
 # setup App pages

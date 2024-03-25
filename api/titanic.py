@@ -4,7 +4,7 @@ from flask_restful import Api, Resource # used for REST API building
 from datetime import datetime
 import pandas as pd
 
-from model.model import *
+from model.titanic import *
 
 model_api = Blueprint('model_api', __name__,
                    url_prefix='/api/titanic')

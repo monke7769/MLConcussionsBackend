@@ -34,7 +34,7 @@ class ConcussionRegression:
             cd.drop(cd[cd[cat] < 0].index, inplace=True)
     
     def runLinearRegression(self):
-        # making a linear regression model
+        # making a linear regression model :exploding_face:
         X = cd.drop('healtime', axis=1)
         y = cd['healtime']
         # split up data into training and testing sets

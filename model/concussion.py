@@ -12,7 +12,7 @@ concussion_regression = None
 
 # define the concussionregression class
 class ConcussionRegression:
-    def __init__(self):
+    def __init__(self): # initialize variables
         self.dt = None
         self.lr = None
         self.X_train = None
@@ -45,7 +45,7 @@ class ConcussionRegression:
         lr.fit(X_train, y_train)
         
 def predict(data):
-    new_case = data.copy()
+    new_case = data.copy() # copy in the data from frontend
     '''
     new_case = {
             'name': case.get('name'),
@@ -60,6 +60,7 @@ def predict(data):
         }
     '''
     # convert frontend data to usable format
+    # sex is boolean, name doesn't matter
     new_case['sex'] = new_case['sex'].apply(lambda x: 1 if x == 'male' else 0)
     new_case.drop(['name'], axis=1, inplace=True)
     # predict time to heal
@@ -79,6 +80,7 @@ def initConcussion():
 if __name__ == "__main__":
     # initialize concussion model
     initConcussion()
+    # test data on partner
     patient_data = pd.DataFrame({
         'name': ['Andrew Kim'],
         'sex': ['male'],

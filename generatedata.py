@@ -5,13 +5,13 @@ Note: this data generation code came from ChatGPT
 import numpy as np
 import pandas as pd
 
-# Set random seed for reproducibility
+# random seed for reproducibility
 np.random.seed(42)
 
-# Number of samples
+# sample size
 num_samples = 1000
 
-# Generate data
+# generate data
 data = {
     'sex': np.random.choice([0, 1], size=num_samples),
     'age': np.random.normal(loc=30, scale=10, size=num_samples),
@@ -24,13 +24,13 @@ data = {
     'hitbox': np.random.normal(loc=1.0, scale=0.3, size=num_samples)  # New feature
 }
 
-# Define function to calculate recovery time
+# calculating healtime from generated data according to formula
 def calculate_recovery_time(row):
-    age_effect = row['age'] / 10  # Older individuals may take longer to heal
-    bad_habits_effect = row['smoke'] * 2 + row['alcohol'] * 1.5  # Smoking and alcohol may delay healing
-    sleep_effect = (8 - row['sleephrs']) / 2  # Less sleep may delay healing
-    exercise_effect = row['exercisehrs'] / 3  # Exercise may promote faster healing
-    object_weight_effect = (4.5**row['hitbox'])*2.0  # Heavier object may prolong healing
+    age_effect = row['age'] / 10  # older ppl may take longer to heal
+    bad_habits_effect = row['smoke'] * 2 + row['alcohol'] * 1.5  # smoking + alcohol bad
+    sleep_effect = (8 - row['sleephrs']) / 2  # less sleep = slower healing
+    exercise_effect = row['exercisehrs'] / 3  # being active = faster healing
+    object_weight_effect = (4.5**row['hitbox'])*2.0  # exponential increase in healtime for heavier objects
 
     # Combine effects and add some random noise
     recovery_time = 10 + age_effect + bad_habits_effect + sleep_effect - exercise_effect + object_weight_effect + np.random.normal(loc=0, scale=3)

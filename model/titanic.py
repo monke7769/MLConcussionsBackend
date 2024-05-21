@@ -34,6 +34,7 @@ class TitanicRegression:
         global enc
         enc = OneHotEncoder(handle_unknown='ignore')
         enc.fit(td[['embarked']])
+        # onehot encoder helps to transform the data
         onehot = enc.transform(td[['embarked']]).toarray()
         cols = ['embarked_' + val for val in enc.categories_[0]]
         td[cols] = pd.DataFrame(onehot)
@@ -89,6 +90,7 @@ class TitanicRegression:
         print('LogisticRegression Accuracy: {:.2%}'.format(accuracy))  
 
 def initTitanic():
+    # initialize all functions
     global titanic_regression
     titanic_regression = TitanicRegression()
     titanic_regression.initTitanic()
@@ -97,8 +99,7 @@ def initTitanic():
 
 # From API
 def predictSurvival(passenger):
-    # more code here
-    # interact with
+    # copy in a new passenger
     new_passenger = passenger.copy()
     # Preprocess the new passenger data
     new_passenger['sex'] = new_passenger['sex'].apply(lambda x: 1 if x == 'male' else 0)
@@ -115,13 +116,15 @@ def predictSurvival(passenger):
     print('Death probability: {:.2%}'.format(dead_proba))  
     print('Survival probability: {:.2%}'.format(alive_proba)) 
     return [dead_proba, alive_proba]
+    # one liner solution that is rather hard to explain
     #return (lambda new_passenger: [[(lambda onehot: (lambda cols: [[new_passenger.drop(['name'], axis=1, inplace=True), [new_passenger.drop(['embarked'], axis=1, inplace=True), [[print('Death probability: {:.2%}'.format(dead_proba)), [print('Survival probability: {:.2%}'.format(alive_proba)), [dead_proba, alive_proba]][-1]][-1] for (dead_proba, alive_proba) in [np.squeeze(logreg.predict_proba(new_passenger))]][0]][-1]][-1] for new_passenger[cols] in [pd.DataFrame(onehot, index=new_passenger.index)]][0])(['embarked_' + val for val in enc.categories_[0]]))(enc.transform(new_passenger[['embarked']]).toarray()) for new_passenger['alone'] in [new_passenger['alone'].apply(lambda x: 1 if x == True else 0)]][0] for new_passenger['sex'] in [new_passenger['sex'].apply(lambda x: 1 if x == 'male' else 0)]][0])(passenger.copy())
 
 
-# Sample usage without API
+# sample usage, testing pruposes
 if __name__ == "__main__":
     # Initialize the Titanic model
     initTitanic()
+    # create a new passenger
     passenger = pd.DataFrame({
         'name': [''],
         'pclass': [0],

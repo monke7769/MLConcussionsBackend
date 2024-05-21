@@ -1,31 +1,39 @@
+# import all necessary packages for machine learning
+# numpy to handle the returned result and convert into usable list format
 import numpy as np
-from sklearn.preprocessing import OneHotEncoder
+# need to be able to split up data into training and testing sets
 from sklearn.model_selection import train_test_split
-from sklearn.tree import DecisionTreeClassifier
+# training with linear regression model as data is continuous, not discrete
 from sklearn.linear_model import LinearRegression
-from sklearn.metrics import mean_squared_error
-from sklearn.metrics import accuracy_score
+# python pandas package
+# need pandas for dataframe and easy data manipulation
 import pandas as pd
 
-# Define the Concussion Regression global variable
+# Define the concussion_regression global variable
 concussion_regression = None
 
-# define the concussionregression class
+# define the ConcussionRegression class
+# we are using OOP here
 class ConcussionRegression:
-    def __init__(self): # initialize variables
-        self.dt = None
-        self.lr = None
-        self.X_train = None
-        self.X_test = None
-        self.y_train = None
-        self.y_test = None
-        self.td = None
-        
+    # below are the separate functions to handle various events in the prediction
+    # initConcussion will take the generated sample data from the CSV file
+    # then it will clean data by removing all negative values
     def initConcussion(self):
         # load in the csv data
         concussion_data = pd.read_csv('concussion_recovery_data.csv')
+        '''
+        Categories in the CSV file: sex,age,ht,wt,smoke,alcohol,sleephrs,exercisehrs,hitbox,healtime
+        sex is boolean, 1=male 0=female
+        ht = height (cm)
+        wt = weight (kg)
+        smoke/alcohol are boolean, 1=yes 0=no
+        sleephrs are per night
+        exercisehrs are per week
+        hitbox = size of object hit, in kg
+        healtime is in days
+        '''
         global cd
-        # now cd has all the data
+        # now variable cd has all the data
         cd = concussion_data
         categories = ['age', 'ht', 'wt', 'sleephrs', 'exercisehrs', 'hitbox', 'healtime']
         # clean up the data
@@ -33,20 +41,23 @@ class ConcussionRegression:
         for cat in categories:
             cd.drop(cd[cd[cat] < 0].index, inplace=True)
     
+    # runLinearRegression trains the model according to linear regression
+    # the model will be trained to predict healtime based on the other categories
     def runLinearRegression(self):
-        # making a linear regression model :exploding_face:
-        X = cd.drop('healtime', axis=1)
-        y = cd['healtime']
+        # making a linear regression model
+        X = cd.drop('healtime', axis=1) # all categories except healtime (result)
+        y = cd['healtime'] # healtime (the result)
         # split up data into training and testing sets
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
         global lr
-        # train model
+        # train the model
         lr = LinearRegression()
         lr.fit(X_train, y_train)
         
 def predict(data):
     new_case = data.copy() # copy in the data from frontend
     '''
+    format of the input:
     new_case = {
             'name': case.get('name'),
             'sex': case.get('sex'),
@@ -60,17 +71,18 @@ def predict(data):
         }
     '''
     # convert frontend data to usable format
-    # sex is boolean, name doesn't matter
+    # sex converted to boolean and name doesn't matter
     new_case['sex'] = new_case['sex'].apply(lambda x: 1 if x == 'male' else 0)
     new_case.drop(['name'], axis=1, inplace=True)
     # predict time to heal
-    # need to convert to list since "numpy arrays are not directly serializable"
-    healtime = np.squeeze(lr.predict(new_case)).tolist()
-    print(healtime)
+    # need to convert to list since numpy arrays are not directly serializable to JSON
+    healtime = np.squeeze(lr.predict(new_case)).tolist() # use numpy and .tolist()
+    # print(healtime)
     return healtime
 
 def initConcussion():
     # initiate the concussion regression model
+    # then run linear regression
     global concussion_regression
     concussion_regression = ConcussionRegression()
     concussion_regression.initConcussion()

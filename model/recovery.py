@@ -53,6 +53,10 @@ def recovery(patient):
     # initialize final list to return
     final = [totalscore, []]
 
+    mostsevere = np.argmax(symptomscores)
+    print(f"Symptom with the highest score: {patient[mostsevere][0]} (Score: {symptomscores[mostsevere]})")
+
+
     if totalscore>500:
         return "Please seek immediate medical attention."
     # now append suggested recovery methods to final[1]

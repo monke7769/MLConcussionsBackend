@@ -77,6 +77,7 @@ def recovery(patient):
     for i in range(len(symptomscores)):
        if symptomscores[i]>=thresholds[i]:
            final[1].append(suggestions[patient[i][0]])
+    final = list(set(final))
     return final
 
 testlist = [['Headache', 'Mild'], ['Neck Pain', 'Mild'], ['Nausea', 'Mild'], ['Dizziness', 'None'], ['Blurred Vision', 'Mild'], ['Sensitivity to Noise', 'Severe'], ['Sensitivity to Light', 'None'], ['Memory Loss', 'None'], ['Lack of Concentration', 'None'], ['Fatigue', 'None'], ['Confusion', 'None'], ['Drowsiness', 'None'], ['Insomnia', 'None'], ['Irritability', 'None'], ['Nervousness/Anxiety', 'None']]

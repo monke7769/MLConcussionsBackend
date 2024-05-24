@@ -57,8 +57,22 @@ def recovery(patient):
     print(f"Symptom with the highest score: {patient[mostsevere][0]} (Score: {symptomscores[mostsevere]})")
 
 
-    if totalscore>500:
-        return "Please seek immediate medical attention."
+    if totalscore > 400:
+        final[1].append("Please seek immediate medical attention. Your risk level is high.")
+        return final
+    severecounts = 0
+    for i in symptomscores:
+        if i >= 20:
+            severecounts += 1
+    if severecounts == 15:
+        final[1].append(":skull:")
+        return final
+    if severecounts >= 8:
+        final[1].append("A visit to the ER is in your future.")
+        return final
+    
+    # the following are thresholds for scores of symptoms to trigger specific recovery methods
+    thresholds = [10, 24, 10, 30, 8, 18, 18, 8, 24, 15, 27, 20, 12, 15, 15, 5]
     # now append suggested recovery methods to final[1]
     # Best recovery methods... Headache, no screens, no lights, no sound. Do nothing if you have an extreme headache. 
     # Never use screens for the first week atleast.

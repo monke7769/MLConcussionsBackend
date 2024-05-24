@@ -30,10 +30,10 @@ def recovery(patient):
     
     suggestions = {
         'Headache': "Headache, no screens, no lights, no sound. Do nothing if you have an extreme headache. If persistent you can take aspirin/ibuprofen. If extreme and persistent, visit medical personnel.",
-        'Sensitivity to Noise': "Isolate yourself. If symptoms are mild-none wear sunglasses and earmuffs when outdoors.",
-        'Sensitivity to Light': "Isolate yourself. If symptoms are mild-none wear sunglasses and earmuffs when outdoors.",
-        'Neck Pain': "Rest your head and do minimal movement.",
-        'Nausea': "Dramamine tablets and Scopolamine patches.",
+        'Sensitivity to Noise': "Isolate yourself. Wear sunglasses and earmuffs when outdoors.",
+        'Sensitivity to Light': "Isolate yourself. Wear sunglasses and earmuffs when outdoors.",
+        'Neck Pain': "Rest your head and have minimal movement.",
+        'Nausea': "Dramamine tablets and Scopolamine patches are in order.",
         'Blurred Vision': "Rest, if severe and persistent recommended prescription lenses/glasses.",
         'Memory Loss': "If severe/moderate memory, consider getting cognitive therapy.",
         'Fatigue': "Rest, try to avoid doing things and let your brain heal.",
@@ -43,7 +43,7 @@ def recovery(patient):
         'Insomnia': "Take supplements before sleep, even if you’re not experiencing headaches, avoid screens at least 1-2 hours before sleep.",
         'Irritability': "Talk to people and do simple, none intensive activities. If it persists, get therapy. It is common to feel depressed after a traumatic head injury because it cuts you off from the rest of the world.",
         'Nervousness/Anxiety': "Talk to people and do simple, none intensive activities. If it persists, get therapy. It is common to feel depressed after a traumatic head injury because it cuts you off from the rest of the world.",
-        'Sadness/Depression': "Talk to people and do simple, none intensive activities. If it persists, get therapy. It is common to feel depressed after a traumatic head injury because it cuts you off from the rest of the world."
+        'Dizziness': "Talk to people and do simple, none intensive activities. If it persists, get therapy. It is common to feel depressed after a traumatic head injury because it cuts you off from the rest of the world."
     }
     symptomscores = [] # collect a list of all scores for separate symptoms (in order)
     for i in range(len(patient)):
@@ -76,18 +76,8 @@ def recovery(patient):
     
     for i in range(len(symptomscores)):
        if symptomscores[i]>=thresholds[i]:
-           final[1].append(recovery[i])
-           
-
-    # now append suggested recovery methods to final[1]
-    # Best recovery methods... Headache, no screens, no lights, no sound. Do nothing if you have an extreme headache. 
-    # Never use screens for the first week atleast.
-    # Sensivity to light/noise, if mild or lower, wear sunglasses and earmuffs/earplugs all the time. If moderate/severe, stay in your room alone with all the lights off
-    # If all sympoms are mild to none, start doing light exercise such as jogging or walking. The sunlight and sligt activity helps bloodflow which can help recovery
-    # Mandatory Fish oil supplements no matter what even if youre healed even if you never had a concussion
-    # the following conditionals deal with scientifically proven recovery methods
-    # remember to research these tmrw in class + do the html/js formatting
+           final[1].append(suggestions[patient[i][0]])
     return final
 
-testlist = [['Headache', 'Moderate'], ['Neck Pain', 'Mild'], ['Nausea', 'Mild'], ['Dizziness', 'None'], ['Blurred Vision', 'Mild'], ['Sensitivity to Noise', 'Severe'], ['Sensitivity to Light', 'None'], ['Memory Loss', 'None'], ['Lack of Concentration', 'None'], ['Fatigue', 'None'], ['Confusion', 'None'], ['Drowsiness', 'None'], ['Insomnia', 'None'], ['Irritability', 'None'], ['Nervousness/Anxiety', 'None']]
+testlist = [['Headache', 'Mild'], ['Neck Pain', 'Mild'], ['Nausea', 'Mild'], ['Dizziness', 'None'], ['Blurred Vision', 'Mild'], ['Sensitivity to Noise', 'Severe'], ['Sensitivity to Light', 'None'], ['Memory Loss', 'None'], ['Lack of Concentration', 'None'], ['Fatigue', 'None'], ['Confusion', 'None'], ['Drowsiness', 'None'], ['Insomnia', 'None'], ['Irritability', 'None'], ['Nervousness/Anxiety', 'None']]
 recovery(testlist)

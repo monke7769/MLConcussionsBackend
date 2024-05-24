@@ -73,6 +73,12 @@ def recovery(patient):
     
     # the following are thresholds for scores of symptoms to trigger specific recovery methods
     thresholds = [10, 24, 10, 30, 8, 18, 18, 8, 24, 15, 27, 20, 12, 15, 15, 5]
+    
+    for i in range(len(symptomscores)):
+       if symptomscores[i]>=thresholds[i]:
+           final[1].append(recovery[i])
+           
+
     # now append suggested recovery methods to final[1]
     # Best recovery methods... Headache, no screens, no lights, no sound. Do nothing if you have an extreme headache. 
     # Never use screens for the first week atleast.

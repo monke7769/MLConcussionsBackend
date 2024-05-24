@@ -22,6 +22,7 @@ from model.titanic import initTitanic
 from model.concussion import initConcussion
 from api.titanic import model_api
 from api.concussion import concussion_api
+from api.recovery import recovery_api
 
 # setup App pages
 from projects.projects import app_projects # Blueprint directory import projects definition
@@ -38,6 +39,7 @@ app.register_blueprint(player_api)
 app.register_blueprint(app_projects) # register app pages
 app.register_blueprint(model_api)
 app.register_blueprint(concussion_api)
+app.register_blueprint(recovery_api)
 # app.register_blueprint(stock_api)
 
 @app.errorhandler(404)  # catch for URL not found

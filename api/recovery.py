@@ -13,7 +13,13 @@ class RecoveryAPI: # define the class
     class _Recovery(Resource):
         def post(self):
             body = request.get_json()
-            # process the stuff in the body 
-            patient = [] # store processed stuff in patient list
+            # print(body)
+            # process the stuff in the body into list with list comprehension
+            # lists are easier to work with
+            patient = [[i, body.get(i)] for i in body] 
+            print(patient)
+            # store processed stuff in patient list
             # then pass to model file + give the suggestions 
             return jsonify(recovery(patient))
+    
+    api.add_resource(_Recovery, '/')

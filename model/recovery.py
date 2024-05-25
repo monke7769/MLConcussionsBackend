@@ -39,7 +39,10 @@ def recovery(patient):
     
     # Initialize final list to return
     final = [totalscore, []]
-    final[1].append("Please take Fish Oil, Lion's Mane, Curcumin, Vitamin C and E in order to hasten your recovery. Be sure to get plenty of rest")
+
+    if totalscore >=1 :
+        final[1].append("Please take Fish Oil, Lion's Mane, Curcumin, Vitamin C and E in order to hasten your recovery. Be sure to get plenty of rest")
+
     mostsevere = np.argmax(symptomscores)
     print(f"Symptom with the highest score: {patient[mostsevere][0]} (Score: {symptomscores[mostsevere]})")
     

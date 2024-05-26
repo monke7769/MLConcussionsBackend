@@ -10,24 +10,43 @@ def recovery(patient):
         'Moderate': 3,
         'Severe': 5
     }
-    
+    extremes = [50,40,50,50,40,30,30,40,40,25,36,20,20,25,25,25]
+
+    extremesuggestions = {
+        "Headache": "Sleep, do not expose yourself to any light or noise, make sure to take pain medications and supplements. Stay extra hydrated and rest. If it continues seek medical advice from a professional.",
+        "Sensitivity to Noise": "Isolate yourself. Do not go outdoors and do not listen to any music.",
+        "Sensitivity to Light": "Isolate yourself Do not go outdoors and do not look at any screens, if it persists seek prescription lenses.",
+        "Neck Pain": "If extreme, go to a clinic.",
+        "Nausea": "Dramamine tablets and Scopolamine patches are in order.",
+        "Blurred Vision": "Rest. If severe and persistent, recommended prescription lenses/glasses.",
+        "Memory Loss" : "If severe/moderate, consider getting cognitive therapy.",
+        "Fatigue": "Rest. Try to avoid doing things and let your brain heal.",
+        "Lack of Concentration": "Rest. Try to avoid doing things and let your brain heal.",
+        "Confusion": "Rest. Try to avoid doing things and let your brain heal.",
+        "Drowsiness": "Rest. let your brain heal.",
+        "Insomnia": "Take supplements before sleep. Avoid screens at least 1-2 hours before sleep. If you are unable to sleep, you may need to a CT scan.",
+        "Irritability": "Talk to people and do simple, non-intensive activities. If it persists, get therapy and talk to medical professionals. It is common to feel depressed after a traumatic head injury because it cuts you off from the rest of the world.",
+        "Nervousness/Anxiety": "Talk to people and do simple, non-intensive activities. If it persists, get therapy. You don't need to push yourself to come back right away, a couple weeks to make sure you come back strong is better than rushing your way to permenant brain damage.",
+        "Sadness/Depression": "Talk to people and do simple, non-intensive activities. If it persists, get therapy. It is common to feel depressed after a traumatic head injury because it cuts you off from the rest of the world.",
+        "Dizziness": "If you are unable to do anything without feeling dizzy, you may need to get a CT scan."}
+            
     suggestions = {
-        'Headache': "Headache, no screens, no lights, no sound. Do nothing if you have an extreme headache. If persistent you can take aspirin/ibuprofen. If extreme and persistent, visit medical personnel.",
+        'Headache': "Headache, no screens, no lights, no sound If persistent you can take aspirin/ibuprofen.",
         'Sensitivity to Noise': "Isolate yourself. Wear sunglasses when outdoors.",
         'Sensitivity to Light': "Isolate yourself. Wear earmuffs when outdoors.",
         'Neck Pain': "Rest your head and have minimal movement.",
-        'Nausea': "Dramamine tablets and Scopolamine patches are in order.",
-        'Blurred Vision': "Rest, if severe and persistent recommended prescription lenses/glasses.",
-        'Memory Loss': "If severe/moderate memory, consider getting cognitive therapy.",
+        'Nausea': "Rest in silence but make you still eat food.",
+        'Blurred Vision': "Rest, avoid all screens",
+        'Memory Loss': "Keep track of your mental fog, if it continues seek medical opinion.",
         'Fatigue': "Rest, try to avoid doing things and let your brain heal.",
         'Lack of Concentration': "Rest, try to avoid doing things and let your brain heal.",
         'Confusion': "Rest, try to avoid doing things and let your brain heal.",
-        'Drowsiness': "Rest, try to avoid doing things and let your brain heal.",
+        'Drowsiness': "Rest, let your brain heal.",
         'Insomnia': "Take supplements before sleep, even if you’re not experiencing headaches, avoid screens at least 1-2 hours before sleep.",
-        'Irritability': "Talk to people and do simple, non-intensive activities. If it persists, get therapy. It is common to feel depressed after a traumatic head injury because it cuts you off from the rest of the world.",
-        'Nervousness/Anxiety': "Talk to people and do simple, non-intensive activities. If it persists, get therapy. It is common to feel depressed after a traumatic head injury because it cuts you off from the rest of the world.",
-        'Sadness/Depression': "Talk to people and do simple, non-intensive activities. If it persists, get therapy. It is common to feel depressed after a traumatic head injury because it cuts you off from the rest of the world.",
-        'Dizziness': "Talk to people and do simple, non-intensive activities. If it persists, get therapy. It is common to feel depressed after a traumatic head injury because it cuts you off from the rest of the world."
+        'Irritability': "Talk to people and do simple, non-intensive activities. It is common to feel depressed after a traumatic head injury because it cuts you off from the rest of the world.",
+        'Nervousness/Anxiety': "Talk to people and do simple, non-intensive activities.",
+        'Sadness/Depression': "Talk to people and do simple, non-intensive activities. This will quicken you're recovery process.",
+        'Dizziness': "Rest, avoid screens and lights."
     }
     
     symptomscores = []  # Collect a list of all scores for separate symptoms (in order)
@@ -67,7 +86,10 @@ def recovery(patient):
     thresholds = [10, 24, 10, 30, 8, 18, 18, 8, 24, 15, 27, 20, 12, 15, 15, 5]
     
     for i in range(len(symptomscores)):
-       if symptomscores[i] >= thresholds[i]:
+       if symptomscores[i]>= extremes[i]:
+           final[1].append(extremesuggestions[patient[i][0]])
+
+       elif symptomscores[i] >= thresholds[i]:
            final[1].append(suggestions[patient[i][0]])
     
     # Remove duplicates from the final list

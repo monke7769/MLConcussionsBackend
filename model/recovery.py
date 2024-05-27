@@ -10,7 +10,6 @@ def recovery(patient):
         'Moderate': 3,
         'Severe': 5
     }
-    extremes = [50,40,50,50,40,30,30,40,40,25,36,20,20,25,25,25]
 
     extremesuggestions = {
         "Headache": "Sleep, do not expose yourself to any light or noise, make sure to take pain medications and supplements. Stay extra hydrated and rest. If it continues seek medical advice from a professional.",
@@ -27,7 +26,7 @@ def recovery(patient):
         "Insomnia": "Take supplements before sleep. Avoid screens at least 1-2 hours before sleep. If you are unable to sleep, you may need to a CT scan.",
         "Irritability": "Talk to people and do simple, non-intensive activities. If irritable state persists, get therapy and talk to medical professionals. It is common to feel depressed after a traumatic head injury because it cuts you off from the rest of the world.",
         "Nervousness/Anxiety": "Talk to people and do simple, non-intensive activities. If nervousness persists, get therapy. You don't need to push yourself to come back right away, a couple weeks to make sure you come back strong is better than rushing your way to permenant brain damage.",
-        "Sadness/Depression": "Talk to people and do simple, non-intensive activities. If sadness persists, get therapy. It is common to feel depressed after a traumatic head injury because it cuts you off from the rest of the world.",
+        # "Sadness/Depression": "Talk to people and do simple, non-intensive activities. If sadness persists, get therapy. It is common to feel depressed after a traumatic head injury because it cuts you off from the rest of the world.",
         "Dizziness": "If you are unable to do anything without feeling dizzy, you may need to get a CT scan."}
             
     suggestions = {
@@ -45,13 +44,12 @@ def recovery(patient):
         'Insomnia': "Take supplements before sleep, even if you’re not experiencing headaches, avoid screens at least 1-2 hours before sleep.",
         'Irritability': "Talk to people and do simple, non-intensive activities. It is common to feel depressed after a traumatic head injury because it cuts you off from the rest of the world.",
         'Nervousness/Anxiety': "Talk to people and do simple, non-intensive activities.",
-        'Sadness/Depression': "Talk to people and do simple, non-intensive activities. This will quicken you're recovery process.",
+        # 'Sadness/Depression': "Talk to people and do simple, non-intensive activities. This will quicken you're recovery process.",
         'Dizziness': "Rest, avoid screens and lights."
     }
     
-    symptomscores = []  # Collect a list of all scores for separate symptoms (in order)
-    for i in range(len(patient)):
-        symptomscores.append(weights[i] * severitymap[patient[i][1]])
+    symptomscores = []  # Collect a list of all scores for separate symptoms (in order) WITH weighting
+    symptomscores = [weights[i] * severitymap[patient[i][1]] for i in range(len(patient))]
     
     print(symptomscores)
     totalscore = sum(symptomscores)
@@ -62,8 +60,8 @@ def recovery(patient):
     if totalscore >=1 :
         final[1].append("Please take Fish Oil, Lion's Mane, Curcumin, Vitamin C and E in order to hasten your recovery. Be sure to get plenty of rest")
 
-    mostsevere = np.argmax(symptomscores)
-    print(f"Symptom with the highest score: {patient[mostsevere][0]} (Score: {symptomscores[mostsevere]})")
+    # mostsevere = np.argmax(symptomscores)
+    # print(f"Symptom with the highest score: {patient[mostsevere][0]} (Score: {symptomscores[mostsevere]})")
     
     if totalscore > 400:
         final[1].append("Please seek immediate medical attention. Your risk level is high.")
@@ -84,20 +82,22 @@ def recovery(patient):
     
     # The following are thresholds for scores of symptoms to trigger specific recovery methods
     thresholds = [10, 24, 10, 30, 8, 18, 18, 8, 24, 15, 27, 20, 12, 15, 15, 5]
+    # The following are thresholds for scores to trigger recovery methods in extreme cases (SEVERE)
+    extremes = [50,40,50,50,40,30,30,40,40,25,36,20,20,25,25,25]
     
     for i in range(len(symptomscores)):
-       if symptomscores[i]>= extremes[i]:
+       if symptomscores[i] >= extremes[i]:
            final[1].append(extremesuggestions[patient[i][0]])
 
        elif symptomscores[i] >= thresholds[i]:
            final[1].append(suggestions[patient[i][0]])
     
-    # Remove duplicates from the final list
+    # Remove duplicates from the final suggestions list
     final[1] = list(set(final[1]))
-    
+    # returned list is of the form [int, list]
     return final
 
-# Test the function with a sample list
+# Test the function with a sample list (patient in the method above)
 testlist = [['Headache', 'Mild'], ['Neck Pain', 'Mild'], ['Nausea', 'Mild'], ['Dizziness', 'None'], ['Blurred Vision', 'Mild'], ['Sensitivity to Noise', 'Severe'], ['Sensitivity to Light', 'None'], ['Memory Loss', 'None'], ['Lack of Concentration', 'None'], ['Fatigue', 'None'], ['Confusion', 'None'], ['Drowsiness', 'None'], ['Insomnia', 'None'], ['Irritability', 'None'], ['Nervousness/Anxiety', 'None'], ['Sadness/Depression', 'None']]
 result = recovery(testlist)
 print(result)

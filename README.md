@@ -8,4 +8,4 @@ main.py file sets up APIs and registers all URIs. This includes Titanic API (Tit
 
 all .py files in the /api folder handle setting up of API Blueprints and requests from user server (127.0.0.1:4000 if running Concussions Frontend locally)
 
-algorithmic code and ML predictions are all found within /model folder. concussion.py, recovery.py, and titanic.py are the main features in this project and unique to me and partner @ak146.
+algorithmic code and ML data cleaning/predictions are all found within /model folder. concussion.py, recovery.py, and titanic.py are the main features in this project and unique to me and partner @ak146.

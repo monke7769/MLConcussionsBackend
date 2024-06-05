@@ -24,7 +24,7 @@ algorithmic code and ML data cleaning/predictions are all found within /model fo
 
 6. Output Formatting: Returns a list containing the total score and a list of recovery suggestions.
 
-# concussion.py
+# concussion.py (Linear Regression ML)
 
 Libraries:
 - numpy for handling numerical data efficiently.
